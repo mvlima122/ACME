@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import { inter } from './ui/fonts';
 import React from 'react';
+import '@/app/globals.css'
 
 export const metadata:Metadata = {
   title: 'ACME'
