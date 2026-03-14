@@ -24,16 +24,16 @@ async function main() {
     const customer_data = [{
         name: 'Maria Vitoria',
         email: 'maria@email.com',
-        imageUrl: 'https://ui-avatars.com/api/?nome=Maria+Vitoria&background=random'
+        imageUrl: 'https://ui-avatars.com/api/?name=Maria+Vitoria&background=random'
     }, {
         name: 'Marcelo Correia',
         email: 'marcelo@email.com',
-        imageUrl: 'https://ui-avatars.com/api/?nome=Marcelo+Correia&background=random'
+        imageUrl: 'https://ui-avatars.com/api/?name=Marcelo+Correia&background=random'
 
     }, {
         name: 'Ivanda Lima',
         email: 'ivanda@email.com',
-        imageUrl: 'https://ui-avatars.com/api/?nome=Ivanda+Lima&background=random'
+        imageUrl: 'https://ui-avatars.com/api/?name=Ivanda+Lima&background=random'
     }];
 
     const customers = [];
