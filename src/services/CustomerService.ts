@@ -36,3 +36,37 @@ export async function findCustomerById(
   return customer;
 
 };
+
+export async function createCustomer(
+  data:CreateCustomerData
+): Promise<Customer> {
+
+  const customer = await prisma.customer.create({
+    data
+  });
+  
+  return customer;
+};
+
+export async function updateCustomer(
+  id: string,
+  data:UpdateCustomerData
+
+): Promise<Customer> {
+
+  const customer = await prisma.customer.update({
+    where: { id },
+    data
+  });
+
+  return customer;
+};
+
+export async function deleteCustomer(
+  id: string,
+): Promise<void> {
+
+  await prisma.customer.delete({
+    where: { id },
+  });
+};
