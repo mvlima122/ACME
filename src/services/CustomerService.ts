@@ -1,13 +1,26 @@
 import prisma from '@/lib/prisma'; 
-import { Customer, CreateCustomerData, UpdateCustomerData } from '@/types';
+import { Customer, 
+         CreateCustomerData, 
+         UpdateCustomerData,
+         FindAllCustomersParams,
+         PaginatedResponse
+         } from '@/types';
+
+const SORTABLE_FIELDS = ['name', 'email'] as const;  
+
+type SortableFields = (typeof SORTABLE_FIELDS)[number];
+
+function isSortableFields(value: string) {
+  return (SORTABLE_FIELDS as readonly string[]).includes(value);
+};
 
 interface FindAllParams {
   search?: string;
 };
 
 export async function findAllCustomers(
-  params: FindAllParams = {} 
-): Promise<Customer[]> {
+  params: FindAllCustomersParams
+): Promise<PaginatedResponse<Customer>> {
 
 const {search} = params;
 
