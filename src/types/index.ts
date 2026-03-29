@@ -1,6 +1,6 @@
- export type SortOrder = 'asc'|'desc';
- 
- export interface User {
+export type SortOrder = 'asc' | 'desc';
+
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -8,7 +8,7 @@
 };
 
 export type CreateUserData = Omit<User, 'id'>;
-export type UpdateUserData = Partial<CreateUserData>;
+export type UpdateUserData = Partial<CreateUserData>
 
 export interface Customer {
   id: string;
@@ -17,27 +17,39 @@ export interface Customer {
   imageUrl: string;
 };
 
-export type CreateCustomerData = Omit< Customer, 'id'>;
+export type CreateCustomerData = Omit<Customer, 'id'>;
 export type UpdateCustomerData = Partial<CreateCustomerData>;
-
-export type InvoiceStatus = 'PENDENTE' | 'PAGO';
-
-export interface Invoice {
-  id: string,
-  customer_id: string
-  amount: number;
-  date: Date;
-  status: InvoiceStatus;
-};
-
-export type CreateInvoiceData = Omit< Invoice, 'id'>;
-export type UpdateInvoiceData = Partial<CreateInvoiceData>;
 
 export interface FindAllCustomersParams {
   search?: string;
   page?: number;
-  limit?:  number;
+  limit?: number;
   sortBy?: string;
+  order?: SortOrder;
+};
+
+export type InvoiceStatus = 'PENDENTE' | 'PAGO';
+
+export interface Invoice {
+  id: string;
+  customerId: string;
+  amount: number;
+  date: Date;
+  status: InvoiceStatus;
+  customer?: {
+    name: string;
+    email: string;
+    imageUrl: string;
+  }
+};
+
+export type CreateInvoiceData = Omit<Invoice, 'id' | 'customer'>;
+export type UpdateInvoiceData = Partial<CreateInvoiceData>;
+
+export interface FindAllInvoiceParams {
+  search?: string;
+  page?: number;
+  limit?: number;
   order?: SortOrder;
 };
 
@@ -54,7 +66,7 @@ export interface PaginationMeta {
   hasMore: boolean;
 };
 
-export interface PaginatedResponse<T> {
+export interface PaginatedReponse<T> {
   data: T[];
   meta: PaginationMeta;
 };
@@ -66,7 +78,5 @@ export interface ApiResponse<T> {
 
 export interface ApiError {
   error: string;
-  details?: Record< string, string[]>;
+  details?: Record<string, string[]>;
 };
-
-
