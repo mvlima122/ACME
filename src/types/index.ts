@@ -34,11 +34,11 @@ export type CreateInvoiceData = Omit< Invoice, 'id'>;
 export type UpdateInvoiceData = Partial<CreateInvoiceData>;
 
 export interface FindAllCustomersParams {
-  search: string;
-  page: number;
-  limit:  number;
-  sortBy: string;
-  order: SortOrder;
+  search?: string;
+  page?: number;
+  limit?:  number;
+  sortBy?: string;
+  order?: SortOrder;
 };
 
 export interface Revenue {

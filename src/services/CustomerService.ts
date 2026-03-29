@@ -1,70 +1,94 @@
-import prisma from '@/lib/prisma'; 
-import { Customer, 
-         CreateCustomerData, 
-         UpdateCustomerData,
-         FindAllCustomersParams,
-         PaginatedResponse
-         } from '@/types';
+import prisma from '@/lib/prisma';
+import {
+  Customer,
+  CreateCustomerData,
+  UpdateCustomerData,
+  FindAllCustomersParams,
+  PaginatedReponse
+} from '@/types';
 
-const SORTABLE_FIELDS = ['name', 'email'] as const;  
+const SORTABLE_FIELDS = ['name', 'email'] as const;
 
 type SortableFields = (typeof SORTABLE_FIELDS)[number];
 
-function isSortableFields(value: string) {
+function isSortableFields(value: string): value is SortableFields {
   return (SORTABLE_FIELDS as readonly string[]).includes(value);
-};
-
-interface FindAllParams {
-  search?: string;
 };
 
 export async function findAllCustomers(
   params: FindAllCustomersParams
-): Promise<PaginatedResponse<Customer>> {
+): Promise<PaginatedReponse<Customer>> {
 
-const {search} = params;
+  const {
+    search,
+    page = 1,
+    limit = 10,
+    sortBy = 'name',
+    order = 'asc'
+  } = params;
 
-  const customer = await prisma.customer.findMany({
-    where: search ? {
-      OR: [
-        {name:{ contains: search, mode: 'insensitive'}},
-        {email:{ contains: search, mode: 'insensitive'}}
-      ]
-    } : undefined,
-    orderBy: {name: 'asc'}
-  });
+  const safePage = Math.max(1, page);
+  const safeLimit = Math.min(Math.max(1, limit), 100);
+  const skip = (safePage - 1) * safeLimit;
 
-  return customer;
+  const safeSortBy = isSortableFields(sortBy) ? sortBy : 'name';
 
+  const where = search ? {
+    OR: [
+      { name: { contains: search, mode: 'insensitive' as const } },
+      { email: { contains: search, mode: 'insensitive' as const } },
+    ]
+  } : undefined;
+
+  const [customer, total] = await Promise.all([
+    prisma.customer.findMany({
+      where,
+      orderBy: { [safeSortBy]: order },
+      take: safeLimit,
+      skip
+    }),
+    prisma.customer.count({ where })
+  ]);
+
+  const totalPages = Math.ceil(total / safeLimit);
+
+  return {
+    data: customer,
+    meta: {
+      total,
+      page: safePage,
+      limit: safeLimit,
+      totalPages,
+      hasMore: safePage < totalPages
+    }
+  };
 };
 
 export async function findCustomerById(
   id: string
-): Promise<Customer|null> {
+): Promise<Customer | null> {
 
-  const customer = await prisma.customer.findUnique ({
+  const customer = await prisma.customer.findUnique({
     where: { id }
   });
 
   return customer;
-
 };
 
 export async function createCustomer(
-  data:CreateCustomerData
+  data: CreateCustomerData
 ): Promise<Customer> {
 
   const customer = await prisma.customer.create({
     data
   });
-  
+
   return customer;
 };
 
 export async function updateCustomer(
   id: string,
-  data:UpdateCustomerData
-
+  data: UpdateCustomerData
 ): Promise<Customer> {
 
   const customer = await prisma.customer.update({
@@ -76,10 +100,10 @@ export async function updateCustomer(
 };
 
 export async function deleteCustomer(
-  id: string,
+  id: string
 ): Promise<void> {
 
   await prisma.customer.delete({
-    where: { id },
+    where: { id }
   });
 };
