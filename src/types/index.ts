@@ -35,7 +35,7 @@ export interface Invoice {
   customerId: string;
   amount: number;
   date: Date;
-  status: InvoiceStatus;
+   status: InvoiceStatus;
   customer?: {
     name: string;
     email: string;
