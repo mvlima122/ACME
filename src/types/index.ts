@@ -53,8 +53,8 @@ export interface FindAllInvoiceParams {
   order?: SortOrder;
   status?: InvoiceStatus;
   customerId?: string;
-  dateFrom: string;
-  dateTo: string;
+  dateFrom?: string;
+  dateTo?: string;
 };
 
 export interface Revenue {
