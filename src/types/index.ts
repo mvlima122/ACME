@@ -70,6 +70,16 @@ export interface Revenue {
   revenue: number;
 };
 
+export interface DashboardMetrics {
+  customerCount: number;
+  invoiceCount: number;
+  totalPendente: number;
+  totalPago: number;
+  countPendente: number;
+  countPago: number;
+  revenue: Revenue [];
+};
+
 export interface PaginationMeta {
   total: number;
   page: number;
