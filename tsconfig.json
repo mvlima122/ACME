@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/services/UserSrt"  ],
   "exclude": [
     "node_modules"
   ]
